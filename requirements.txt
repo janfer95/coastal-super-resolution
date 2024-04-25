@@ -1,0 +1,8 @@
+lightning
+lightning[extra]
+xugrid
+xugrid[all]
+netcdf4
+matplotlib
+ipykernel
+seaborn

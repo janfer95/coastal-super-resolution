@@ -1,0 +1,62 @@
+trainer:
+  accelerator: gpu
+  # devices: 1
+  # num_nodes: 1
+  # strategy: ddp
+  max_epochs: 5000
+  default_root_dir: model-weights/test-region1
+  fast_dev_run: false  # Check that false before training
+  # limit_train_batches: 0.5  # Train with only x% of dataset
+  # limit_val_batches: 0.3
+  logger: true
+  callbacks:
+    - class_path: lightning.pytorch.callbacks.EarlyStopping
+      init_args:
+        monitor: val_loss
+        patience: 30
+    - class_path: src.checkpoints.datemodelcheckpoint.DateModelCheckpoint
+      init_args:
+        monitor: val_loss
+        save_top_k: 1
+        filename: "Date_"
+    # Check for CPU / GPU Performance
+    - class_path: lightning.pytorch.callbacks.DeviceStatsMonitor
+      init_args:
+        cpu_stats: true
+    - class_path: src.checkpoints.predictionwriter.PredictionWriter
+      init_args:
+        output_dir: ${trainer.default_root_dir}  # Variable interpolation
+        write_interval: epoch
+  profiler:
+    class_path: lightning.pytorch.profilers.SimpleProfiler
+    init_args:
+      filename: profiling_results.txt
+
+optimizer:
+  class_path: torch.optim.Adam
+  init_args:
+    lr: 5e-4
+    betas:
+      - 0.9
+      - 0.95
+    weight_decay: 1e-4
+
+model:
+  class_path: src.models.litgraphnet.LitGraphNet
+  init_args:
+    in_channels: 3
+    hidden_channels: 128
+    num_lr_layers: 15
+    num_hr_layers: 5
+    k: 3
+
+data:
+  class_path: src.datamodules.graphnetdatamodule.SwanDataModule
+  init_args:
+    batch_size: 8
+    num_workers: 6
+    root_dir: data
+    nregion: 1
+    transform: null
+
+
