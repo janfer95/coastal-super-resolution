@@ -3,7 +3,10 @@ computations with Graph Neural Networks and Polynomial Regressions"
 - Kuehn, Abadie, Delpey, Roeber (2024)
 
 **Warning**
-This repository is still under (heavy) construction! 
+This repository is still under construction! The source code for the graph neural
+network and the polynomial regression can be found in `src/models/` and
+`notebooks/boxplot_comparison.ipynb`, respectively, but running the models
+straight out of the box is not possible for now. 
 
 # Installation Steps
 After cloning the repository you have to install the necessary packages.
