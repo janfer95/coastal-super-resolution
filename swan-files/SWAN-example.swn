@@ -1,0 +1,50 @@
+$-------- Section 1. Start --------------------------------------
+$
+PROJ 'PlaneBeach' 'Run1'
+$
+SET 2.25 90 0.05 200 2 9.81 1032 99999 NAUTICAL
+MODE NONSTAT TWOD
+$
+$-------- Section 2. General ------------------------------------
+$
+SET LEVEL=0 NOR=90. NAUTICAL
+COORD CARTESIAN
+$
+$-------- Section 3. Model Grid ----------------------------------
+CGRID UNSTRUCtured SECtor 240 0 40 0.0373 0.25 20
+READgrid UNSTRUCtured ADCirc
+$
+$-------- Section 5. Boundary/Initial Conditions ----------------
+$
+BOUndnest1 NEst 'INPUT/1964/BOBWA_1964.sw' OPEN
+INITial HOTStart 'INPUT/1964/start'
+$
+$-------- Section 6. Physics -------------------------------------
+$
+OFF WINDGROWTH
+OFF QUADRUPL
+OFF WCAPPING
+$
+$-------- Section 7. Numerics ------------------------------------
+$
+NUM ACCUR NONSTAT 50
+$
+$-------- Section 9. Outputs --------------------------------------
+$
+$ - Gridded outputs -
+$
+OUTPUT OPTIONS '%' BLOCK NDEC=6
+$
+$ - Gridded outputs -
+$ For post-processing with Matlab
+BLOCK 'COMPGRID' NOHEAD 'OUTPUT/1964.mat' LAY IDLA=3 &
+        XP YP BOTLEV Hsig RTP TMM10 PDIR Dir WLEN TRA OUTput 19640101.030000 10800 Sec
+$
+$-------- Section 11. Run ----------------------------------------
+$
+$COMPUTE STAT
+$COMPUTE NONSTat 19640101.000000 3600 Sec 19641231.210000
+COMPUTE NONSTat 19640101.000000 3600 Sec 19640103.030000
+$
+STOP
+$
